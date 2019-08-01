@@ -37,15 +37,8 @@ def prep_MNIST_50():
     """
     ## load digits data set
     digits = load_digits()
-    data = digits["data"]
-    images = digits["images"]
-    target = digits["target"]
-    target_names = digits["target_names"]
-    # print("Data shape - Data type: ", data.shape, data.dtype)
 
     # split into train and test data
-    X_all = data
-    y_all = target
     X_train, X_test, y_train , y_test = \
         model_selection.train_test_split(
                 digits.data, digits.target,
