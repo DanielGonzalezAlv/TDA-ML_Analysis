@@ -14,6 +14,10 @@ import numpy as np
 from numpy import linalg as LA
 from sklearn import svm
 
+import _1706_approx_kernel as _1706
+import importlib
+importlib.reload(_1706)
+
 def k_sigma(F, G, sigma):
     """Kernel on the space of persistent diagrams.
 
@@ -72,14 +76,15 @@ if __name__ == "__main__":
     pdgms_train = np.ndarray.tolist(np.load("../data/pdgms/pdgms_train.npy", allow_pickle=True)) # Persistent diagrams of the training data.
     pdgms_test = np.ndarray.tolist(np.load("../data/pdgms/pdgms_test.npy", allow_pickle=True)) # Persistent diagrams of the test data.
     
-    k_1_filt = lambda F, G: k_sigma_filt(F, G, 1)
+    # k_1_filt = lambda F, G: k_sigma_filt(F, G, 0.001)
+    k_1_filt = lambda F, G: _1706.alg_appr_filt(F, G, 10)
     gram = lambda F, G: gram_matrix(F, G, k_1_filt)
 
     # train
     G_train = gram(pdgms_train, pdgms_train)
     clf = svm.SVC(kernel="precomputed")
     clf.fit(G_train, y_train)
-    # print(clf.score(G_train, y_train))
+    print(clf.score(G_train, y_train))
 
     # predict
     G_predict = gram(pdgms_test, pdgms_train)
