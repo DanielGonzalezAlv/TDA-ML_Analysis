@@ -46,5 +46,42 @@ def prep_MNIST_50():
                 random_state = 0)
     return X_train[0:40], X_test[0:10], y_train[0:40], y_test[0:10]
 
+def prep_MNIST_200():
+    """
+    :return: 90% training-dataset, 10% test-dataset
+    """
+    ## load digits data set
+    digits = load_digits()
+
+    # split into train and test data
+    X_train, X_test, y_train , y_test = \
+        model_selection.train_test_split(
+                digits.data, digits.target,
+                test_size = 0.1, 
+                random_state = 0)
+    return X_train[0:160], X_test[0:40], y_train[0:160], y_test[0:40]
+
+def prep_MNIST():
+    """
+    :return: 90% training-dataset, 10% test-dataset
+    """
+    ## load digits data set
+    digits = load_digits()
+    data = digits["data"]
+    images = digits["images"]
+    target = digits["target"]
+    target_names = digits["target_names"]
+    # print("Data shape - Data type: ", data.shape, data.dtype)
+
+    # split into train and test data
+    X_all = data
+    y_all = target
+    X_train, X_test, y_train , y_test = \
+        model_selection.train_test_split(
+                digits.data, digits.target,
+                test_size = 0.1, 
+                random_state = 0)
+    return X_train, X_test, y_train, y_test
+
 if __name__ == "__main__":
     X_train, X_test, y_train , y_test= prep_MNIST_50()
