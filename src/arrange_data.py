@@ -55,9 +55,13 @@ def prep_MNIST():
 
 if __name__ == "__main__":
     X_train, X_test, y_train , y_test= prep_MNIST()
+    X_300 = np.append(X_train[0:240], X_test[0:60], axis=0)
+    y_300 = np.append(y_train[0:240], y_test[0:60], axis=0)
     
     # Save npy files
-    #np.save("../data/data_set/X_train", X_train)
-    #np.save("../data/data_set/y_train", y_train)
-    #np.save("../data/data_set/X_test", X_test)
-    #np.save("../data/data_set/y_test", y_test)
+   # np.save("../data/data_set/X_train", X_train)
+   # np.save("../data/data_set/y_train", y_train)
+   # np.save("../data/data_set/X_test", X_test)
+   # np.save("../data/data_set/y_test", y_test)
+   # np.save("../data/data_set/X_300", X_300)
+   # np.save("../data/data_set/y_300", y_300)
