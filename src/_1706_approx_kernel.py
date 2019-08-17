@@ -12,7 +12,7 @@ import math as mt
 import numpy as np
 
 #input: a normal list
-def alg_appr(dg_1, dg_2, m):
+def alg_appr(dg_1, dg_2, m, sigma):
     
     theta = -mt.pi/2
     s = mt.pi/m
@@ -28,18 +28,14 @@ def alg_appr(dg_1, dg_2, m):
     for i, p_k in enumerate(dg_2):
         dp_2[i] = ((p_k[0]+p_k[1])/2, (p_k[0]+p_k[1])/2)
     
-    dg_1 += dp_2
-    dg_2 += dp_1
-    # np.append(dg_1, dp_2)
-    # np.append(dg_2, dp_1)
+    df_1 = np.asarray(dg_1 + dp_2)
+    df_2 = np.asarray(dg_2 + dp_1)
     
-    dg_1 = np.asarray(dg_1)   #want to use dot product in np
-    dg_2 = np.asarray(dg_2)
     for i in range(m):
         theta_vec = np.array([mt.cos(theta), mt.sin(theta)])
-        for p_k in dg_1:
+        for p_k in df_1:
             v_1 = np.append(v_1, np.dot(theta_vec, p_k))
-        for p_k in dg_2:
+        for p_k in df_2:
             v_2 = np.append(v_2, np.dot(theta_vec, p_k))
         w_1 = np.sort(v_1)
         w_2 = np.sort(v_2)
@@ -48,18 +44,15 @@ def alg_appr(dg_1, dg_2, m):
         v_1 = np.array([])
         v_2 = np.array([])
 
-    return (1/mt.pi)*sli_was
+    return np.exp(sli_was / (-2 * mt.pi * sigma*sigma))
 
-def alg_appr_filt(dg_1, dg_2, m):
+def alg_appr_filt(dg_1, dg_2, m, sigma, maxDim):
     """Kernel adapted to sets of filtrations and homology groups."""
     sum = 0
     for filt in range(len(dg_1)): # Iterate over filtrations.
-        for dim in range(len(dg_1[filt])): # Iterate over homology dimensions.
-            sum += alg_appr(dg_1[filt][dim], dg_2[filt][dim], m)
+        for dim in range(min(len(dg_1[filt]), maxDim)): # Iterate over homology dimensions.
+            sum += alg_appr(dg_1[filt][dim], dg_2[filt][dim], m, sigma)
 
     return sum
 
 #%%
-
-
-
