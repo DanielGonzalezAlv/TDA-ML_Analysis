@@ -18,47 +18,45 @@ sys.path.insert(1, '/home/daniel/Studies/Uni-Heidelberg/TDA/c-hofer/tda-toolkit'
 
 # Load dependencies
 import numpy as np
-from data_prep import * 
+import matplotlib.pyplot as plt
+#from data_prep import * 
 from pershombox import calculate_discrete_NPHT_2d, distance_npht2D
 
 
-X_test = np.load("../data/pdgms/X_test.npy")
-X_train = np.load("../data/pdgms/X_train.npy")
-y_train = np.load("../data/pdgms/y_train.npy") # Labels of the training data.
-y_test = np.load("../data/pdgms/y_test.npy") # Labels of the test data.
-pdgms_train = np.ndarray.tolist(np.load("../data/pdgms/pdgms_train.npy", allow_pickle=True)) # Persistent diagrams of the training data.
-pdgms_test = np.ndarray.tolist(np.load("../data/pdgms/pdgms_test.npy", allow_pickle=True)) # Persistent diagrams of the test data.
+X_300 = np.load("../data/data_set/X_300.npy")
+y_300 = np.load("../data/data_set/y_300.npy") # Labels of the training data.
+pdgms_300_4angl = np.load("../data/pdgms/pdgms_300_4angl.npy")
+pdgms_300_4angl_list = np.ndarray.tolist(pdgms_300_4angl)
 
-def plot_image(img, img_nr):
-    """
-    This function is intended to plot digits for ilustration
-    """
-    img = img[img_nr,:,:]
+#def plot_image(img, img_nr):
+#    """
+#    This function is intended to plot digits for ilustration
+#    """
+#    img = img[img_nr,:,:]
+#    fig = plt.figure(figsize = (7,7))
+#    plt.gray()
+#    plt.subplot('131'); plt.axis('off')
+#    plt.imshow(img, interpolation = "nearest")
+#    plt.subplot('132'); plt.axis('off')
+#    plt.imshow(img, interpolation = "gaussian")
+#    plt.subplot('133'); plt.axis('off')
+#    plt.imshow(img, interpolation = "spline36")
+#    fig.tight_layout(); plt.show()
+
+for i in range(len(pdgms_300_4angl_list)):
+    print("label = {}".format(y_300[i]))
+
+    #for j in range(4):
+    print(pdgms_300_4angl_list[i][1][1])
+    img = X_300[i].reshape(8,8)
+    val = filters.threshold_otsu(img)
+    img2 = img <= val 
+
+    print(img)
     fig = plt.figure(figsize = (7,7))
     plt.gray()
-    plt.subplot('131'); plt.axis('off')
+    plt.subplot('121'); plt.axis('off')
     plt.imshow(img, interpolation = "nearest")
-    plt.subplot('132'); plt.axis('off')
-    plt.imshow(img, interpolation = "gaussian")
-    plt.subplot('133'); plt.axis('off')
-    plt.imshow(img, interpolation = "spline36")
+    plt.subplot('122'); plt.axis('off')
+    plt.imshow(img2, interpolation = "nearest")
     fig.tight_layout(); plt.show()
-
-for i in range(len(pdgms_train)):
-    print("label = {}".format(y_train[i]))
-    for j in range(4):
-        print(pdgms_train[i][j][1])
-        img = X_train[i].reshape(8,8)
-        val = filters.threshold_otsu(img)
-        img2 = img <= val 
-
-        print(img)
-        fig = plt.figure(figsize = (7,7))
-        plt.gray()
-        plt.subplot('131'); plt.axis('off')
-        plt.imshow(img, interpolation = "nearest")
-        plt.subplot('132'); plt.axis('off')
-        plt.imshow(img, interpolation = "gaussian")
-        plt.subplot('133'); plt.axis('off')
-        plt.imshow(img2, interpolation = "nearest")
-        fig.tight_layout(); plt.show()
