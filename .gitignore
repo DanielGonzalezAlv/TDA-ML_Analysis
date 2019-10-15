@@ -1,0 +1,15 @@
+exec/wasserstein_dist_dipha.exe
+exec/wasserstein_test.exe
+exec/wasserstein_dist.exe
+exec/wasserstein_dist_point_cloud.exe
+exec/perseusWin.exe
+exec/full_to_sparse_distance_matrix.exe
+exec/dualize.exe
+exec/dipha.exe
+exec/create_phat_filtration.exe
+data/pdgms/.npy
+data/pdgms/.npy
+src/__pycache__/_1706_approx_kernel.cpython-37.pyc
+src/__pycache__/data_prep.cpython-37.pyc
+src/.vscode/settings.json
+src/__pycache__/reininghaus_2015_kernel.cpython-37.pyc
