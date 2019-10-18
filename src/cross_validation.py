@@ -2,6 +2,9 @@
 
 #%% Load external dependencies
 import numpy as np
+import matplotlib.pyplot as plt
+import parallel_joblib_counter as ctr
+import os
 from numpy import linalg as LA
 from sklearn import svm
 from sklearn.model_selection import KFold
@@ -10,12 +13,29 @@ from joblib import Parallel, delayed
 import reininghaus_2015_kernel as _2015
 import _1706_approx_kernel as _1706
 
-def gram_matrix(Fs, Gs, k):
+#%%
+def gram_matrix(Fs, Gs, k, noisy=False):
     """Gram matrix"""
-    G = Parallel(n_jobs=12)(delayed(k)(Fs[idF], Gs[idG])
-        for idF in range(len(Fs))
-        for idG in range(len(Gs))
-    )
+
+    if noisy: # print progress
+        print("progress gram matrix")
+        step = len(Fs) * len(Gs) // 100
+        manager = ctr.Manager()
+        counter = ctr.Counter(manager, 0)
+        def k_ctr(x, y, ctr_):
+            ctr_.increment()
+            if ctr_.value() % step == 0:
+                print(".".format(os.getpid()))
+            return k(x, y)
+        G = Parallel(n_jobs=12)(delayed(k_ctr)(Fs[idF], Gs[idG], counter)
+            for idF in range(len(Fs))
+            for idG in range(len(Gs))
+        )
+    else:
+        G = Parallel(n_jobs=12)(delayed(k)(Fs[idF], Gs[idG])
+            for idF in range(len(Fs))
+            for idG in range(len(Gs))
+        )
 
     return np.asarray(G).reshape((len(Fs), len(Gs)))
 
@@ -81,26 +101,54 @@ def score(kernel, X_train, X_test, Y_train, Y_test):
 
     return np.ndarray.tolist(result).count(True) / len(result)
 
+def plot_convergence(kernel, pdgms, labels, samples):
+    # convergence plot
+    x = [None] * samples # x-axis
+    scores = [None] * samples
+
+    # Split the set into samples + 1 partitions and use the last one as the test set.
+    split = samples * len(pdgms) // (samples + 1)
+    train_set = np.array(pdgms[0 : split])
+    test_set = np.array(pdgms[split : len(pdgms)])
+    gram = gram_matrix(train_set, train_set, kernel)
+    clf = svm.SVC(kernel="precomputed")
+
+    for i in range(samples):
+        size = (i + 1) * len(pdgms) // (samples + 1)
+
+        clf.fit(gram[np.ix_(range(size), range(size))], labels[: size])
+
+        pred = clf.predict(gram_matrix(test_set, train_set[: size], kernel))
+        result = np.array(pred) == np.array(labels[split : len(pdgms)])
+
+        x[i] = size
+        scores[i] = np.ndarray.tolist(result).count(True) / len(result)
+    
+    plt.plot(x, scores)
+    plt.xlabel('training size')
+    plt.ylabel('accuracy')
+    axes = plt.gca()
+    axes.set_ylim([0, 1])
+
+
+    return (x, scores)
+
 #%%
 if __name__ == "__main__":
-    y = np.load("../data/data_set/y_300.npy") # Labels
+    y = np.load("../data/data_set/y_all.npy") # Labels
 
     # Persistent diagrams (different filtrations and different input images (gray and binary))
-    pdgms_4angl_thr = np.ndarray.tolist(np.load("../data/pdgms/pdgms_300_4angl_thr.npy", allow_pickle=True))
-    pdgms_4angl = np.ndarray.tolist(np.load("../data/pdgms/pdgms_300_4angl.npy", allow_pickle=True))
-    pdgms_8angl_thr = np.ndarray.tolist(np.load("../data/pdgms/pdgms_300_8angl_thr.npy", allow_pickle=True))
-    pdgms_8angl = np.ndarray.tolist(np.load("../data/pdgms/pdgms_300_8angl.npy", allow_pickle=True))
+    pdgms_8angl = np.ndarray.tolist(np.load("../data/pdgms/pdgms_all_8angl.npy", allow_pickle=True))
 
     maxDim = 1 # Maximum homology dimension used for computation.
     k_2015 = lambda F, G: _2015.k_sigma_filt(F, G, 0.001, maxDim)
     k_1706 = lambda F, G: _1706.alg_appr_filt(F, G, 5, 0.5, maxDim)
 
-    k = 2 # K-fold cross-validation
-    scores_2015 = cross_validation(k_2015, np.array(pdgms_4angl), y, k)
-    scores_1706 = cross_validation(k_1706, np.array(pdgms_4angl), y, k)
+    # k = 2 # K-fold cross-validation
+    scores_2015 = cross_validation(k_2015, np.array(pdgms_8angl), y, k)
+    scores_1706 = cross_validation(k_1706, np.array(pdgms_8angl), y, k)
 
-    # Example to score training and test set of different size.
-    my_score = score(k_2015, np.array(pdgms_4angl[0:240]), np.array(pdgms_4angl[240:300]),
-        y[0:240], y[240:300])
+    samples = 10
+    scores = plot_convergence(k_2015, pdgms_8angl, y, samples)
 
-    # TODO: plot data
+# %%
