@@ -6,8 +6,8 @@ Created on Fr July 12 18:03:28 2018
 
 @author: TDA-Team:  Sebastian Dobrzynski, Daniel Gonzalez, Andre Schulze
 
-This script computes the presistent diagrams using the approach
-of @c-hofer (angles filtrations)
+This script computes was created in order to plot the results of the persistent diagrams.
+
 """
 
 # Add pershombox module to path.
@@ -27,21 +27,6 @@ X_300 = np.load("../data/data_set/X_300.npy")
 y_300 = np.load("../data/data_set/y_300.npy") # Labels of the training data.
 pdgms_300_4angl = np.load("../data/pdgms/pdgms_300_4angl.npy")
 pdgms_300_4angl_list = np.ndarray.tolist(pdgms_300_4angl)
-
-#def plot_image(img, img_nr):
-#    """
-#    This function is intended to plot digits for ilustration
-#    """
-#    img = img[img_nr,:,:]
-#    fig = plt.figure(figsize = (7,7))
-#    plt.gray()
-#    plt.subplot('131'); plt.axis('off')
-#    plt.imshow(img, interpolation = "nearest")
-#    plt.subplot('132'); plt.axis('off')
-#    plt.imshow(img, interpolation = "gaussian")
-#    plt.subplot('133'); plt.axis('off')
-#    plt.imshow(img, interpolation = "spline36")
-#    fig.tight_layout(); plt.show()
 
 for i in range(len(pdgms_300_4angl_list)):
     print("label = {}".format(y_300[i]))
