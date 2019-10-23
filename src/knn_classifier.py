@@ -4,6 +4,7 @@
 """
 Created on Fr July 19 12:43:08 2018
 @author: TDA-Team:  Sebastian Dobrzynski, Daniel Gonzalez, Andre Schulze
+
 This script ist intended for the TDA_ML_analysis project.  
 It is based on a sample solution of an excerse sheet of the course
 Fundamentals of Machine Learning hold in WS 2018 in Heidelberg
@@ -60,7 +61,8 @@ def k_nearest_neighbors(X_train, y_train, X_test, k):
     return np.argmax(counts, axis = 0)
 
 # Compute predictions
-knn_prediction = k_nearest_neighbors(X_train, y_train, X_test, 5)
+k = 20
+knn_prediction = k_nearest_neighbors(X_train, y_train, X_test, k)
 accuracy_knn = sum(knn_prediction == y_test)/y_test.shape[0]*100
 print("accuracy knn = {}".format(accuracy_knn))
 
