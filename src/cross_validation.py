@@ -139,17 +139,19 @@ if __name__ == "__main__":
 
     # Persistent diagrams (different filtrations and different input images (gray and binary))
     pdgms_8angl = np.ndarray.tolist(np.load("../data/pdgms/pdgms_all_8angl.npy", allow_pickle=True))
+    pdgms_4angl = np.ndarray.tolist(np.load("../data/pdgms/pdgms_all_4angl.npy", allow_pickle=True))
     #pdgms_8angl = pdgms_8angl[0:200]
 
     maxDim = 1 # Maximum homology dimension used for computation.
-    k_2015 = lambda F, G: _2015.k_sigma_filt(F, G, 0.001, maxDim)
-    #k_1706 = lambda F, G: _1706.alg_appr_filt(F, G, 5, 0.5, maxDim)
+    #k_2015 = lambda F, G: _2015.k_sigma_filt(F, G, 0.001, maxDim)
+    k_1706 = lambda F, G: _1706.alg_appr_filt(F, G, 5, 0.5, maxDim)
 
     #k = 2 # K-fold cross-validation
     #scores_2015 = cross_validation(k_2015, np.array(pdgms_8angl), y, k)
     #scores_1706 = cross_validation(k_1706, np.array(pdgms_8angl), y, k)
 
     samples = 10
-    scores = plot_convergence(k_2015, pdgms_8angl, y, samples)
-    print(scores)
-# %%
+    scores = plot_convergence(k_1706, pdgms_4angl, y, samples)
+    
+    np.save("../data/plots/k_1706_4angl", scores)
+#%%

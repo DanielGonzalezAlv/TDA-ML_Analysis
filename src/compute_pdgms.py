@@ -25,54 +25,58 @@ X_300 = np.load("../data/data_set/X_300.npy")
 y_300 = np.load("../data/data_set/y_300.npy") # Labels of the training data.
 X_all = np.load("../data/data_set/X_all.npy")
 y_all = np.load("../data/data_set/y_all.npy") # Labels of the training data.
+X_train = X_all[200:]
+X_test = X_all[0:200]
+y_train = y_all[200:]
+y_test = y_all[0:200]
 
-pdgms_300_4angl = [] #for i in range(X_300.shape[0]):
-    img = X_300[i].reshape(8,8).copy()
-    pdgms_300_4angl.append(calculate_discrete_NPHT_2d(img,4))
-
-# With threshold
-pdgms_300_4angl_thr = []
-for i in range(X_300.shape[0]):
-    img = X_300[i].reshape(8,8).copy()
-    val = filters.threshold_otsu(img)
-    img[img<val] = 0
-    img[img>=val] = 1
-    pdgms_300_4angl_thr.append(calculate_discrete_NPHT_2d(img,4))
-
-pdgms_300_8angl = []
-for i in range(X_300.shape[0]):
-    img = X_300[i].reshape(8,8).copy()
-    pdgms_300_8angl.append(calculate_discrete_NPHT_2d(img,8))
-
-# With threshold
-pdgms_300_8angl_thr = []
-for i in range(X_300.shape[0]):
-    img = X_300[i].reshape(8,8).copy()
-    val = filters.threshold_otsu(img)
-    img[img<val] = 0
-    img[img>=val] = 1
-    pdgms_300_8angl_thr.append(calculate_discrete_NPHT_2d(img,8))
+#pdgms_300_4angl = [] #for i in range(X_300.shape[0]):
+#    img = X_300[i].reshape(8,8).copy()
+#    pdgms_300_4angl.append(calculate_discrete_NPHT_2d(img,4))
+#
+## With threshold
+#pdgms_300_4angl_thr = []
+#for i in range(X_300.shape[0]):
+#    img = X_300[i].reshape(8,8).copy()
+#    val = filters.threshold_otsu(img)
+#    img[img<val] = 0
+#    img[img>=val] = 1
+#    pdgms_300_4angl_thr.append(calculate_discrete_NPHT_2d(img,4))
+#
+#pdgms_300_8angl = []
+#for i in range(X_300.shape[0]):
+#    img = X_300[i].reshape(8,8).copy()
+#    pdgms_300_8angl.append(calculate_discrete_NPHT_2d(img,8))
+#
+## With threshold
+#pdgms_300_8angl_thr = []
+#for i in range(X_300.shape[0]):
+#    img = X_300[i].reshape(8,8).copy()
+#    val = filters.threshold_otsu(img)
+#    img[img<val] = 0
+#    img[img>=val] = 1
+#    pdgms_300_8angl_thr.append(calculate_discrete_NPHT_2d(img,8))
 
 pdgms_all_4angl = []
 for i in range(X_all.shape[0]):
     img = X_all[i].reshape(8,8).copy()
     pdgms_all_4angl.append(calculate_discrete_NPHT_2d(img,4))
 
-pdgms_all_8angl = []
-for i in range(X_all.shape[0]):
-    img = X_all[i].reshape(8,8).copy()
-    pdgms_all_8angl.append(calculate_discrete_NPHT_2d(img,8))
+#pdgms_all_8angl = []
+#for i in range(X_all.shape[0]):
+#    img = X_all[i].reshape(8,8).copy()
+#    pdgms_all_8angl.append(calculate_discrete_NPHT_2d(img,8))
 
-pdgms_300_4angl = np.asarray(pdgms_300_4angl)
-pdgms_300_4angl_thr = np.asarray(pdgms_300_4angl_thr)
-pdgms_300_8angl = np.asarray(pdgms_300_8angl)
-pdgms_300_8angl_thr = np.asarray(pdgms_300_8angl_thr)
+#pdgms_300_4angl = np.asarray(pdgms_300_4angl)
+#pdgms_300_4angl_thr = np.asarray(pdgms_300_4angl_thr)
+#pdgms_300_8angl = np.asarray(pdgms_300_8angl)
+#pdgms_300_8angl_thr = np.asarray(pdgms_300_8angl_thr)
 pdgms_all_4angl = np.asarray(pdgms_all_4angl)
-pdgms_all_8angl = np.asarray(pdgms_all_4angl)
+#pdgms_all_8angl = np.asarray(pdgms_all_4angl)
 
-np.save("../data/pdgms/pdgms_300_4angl", pdgms_300_4angl)
-np.save("../data/pdgms/pdgms_300_4angl_thr", pdgms_300_4angl_thr)
-np.save("../data/pdgms/pdgms_300_8angl", pdgms_300_8angl)
-np.save("../data/pdgms/pdgms_300_8angl_thr", pdgms_300_8angl_thr)
+#np.save("../data/pdgms/pdgms_300_4angl", pdgms_300_4angl)
+#np.save("../data/pdgms/pdgms_300_4angl_thr", pdgms_300_4angl_thr)
+#np.save("../data/pdgms/pdgms_300_8angl", pdgms_300_8angl)
+#np.save("../data/pdgms/pdgms_300_8angl_thr", pdgms_300_8angl_thr)
 np.save("../data/pdgms/pdgms_all_4angl", pdgms_all_4angl)
-np.save("../data/pdgms/pdgms_all_8angl", pdgms_all_8angl)
+#np.save("../data/pdgms/pdgms_all_8angl", pdgms_all_8angl)

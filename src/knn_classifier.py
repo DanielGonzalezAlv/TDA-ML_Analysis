@@ -30,14 +30,21 @@ target_names = digits["target_names"]
 img = images[3,:,:]
 
 # split into train and test data
-X_all = data
-y_all = target
-X_train, X_test, y_train , y_test = model_selection.train_test_split(
-                                    digits.data,
-                                    digits.target,
-                                    test_size = 0.4,
-                                    random_state = 0)
-print("X_train.shape = {}, X_test.shape = {}".format(X_train.shape, X_test.shape))
+#X_all = data
+#y_all = target
+#X_train, X_test, y_train , y_test = model_selection.train_test_split(
+#                                    digits.data,
+#                                    digits.target,
+#                                    test_size = 0.4,
+#                                    random_state = 0)
+#print("X_train.shape = {}, X_test.shape = {}".format(X_train.shape, X_test.shape))
+
+X_all = np.load("../data/data_set/X_all.npy")
+y_all = np.load("../data/data_set/y_all.npy") # Labels of the training data.
+X_train = X_all[163:]
+X_test = X_all[0:163]
+y_train = y_all[163:]
+y_test = y_all[0:163]
 
 # euclidean distance computation using broadcasting
 def dist_vec(training, test):
@@ -61,11 +68,23 @@ def k_nearest_neighbors(X_train, y_train, X_test, k):
     return np.argmax(counts, axis = 0)
 
 # Compute predictions
-k = 20
-knn_prediction = k_nearest_neighbors(X_train, y_train, X_test, k)
-accuracy_knn = sum(knn_prediction == y_test)/y_test.shape[0]*100
-print("accuracy knn = {}".format(accuracy_knn))
+steps = [1.63000000e+02, 3.26000000e+02, 4.90000000e+02, 6.53000000e+02,
+        8.16000000e+02, 9.80000000e+02, 1.14300000e+03, 1.30600000e+03,
+        1.47000000e+03, 1.63300000e+03]
+scores = np.empty([2,len(steps)])
+scores[0] = np.array(steps)
+k = 1
+i=0
+for s in steps:
+    knn_prediction = k_nearest_neighbors(X_train[0:int(s)], y_train[0:int(s)], X_test, k)
+    accuracy_knn = sum(knn_prediction == y_test)/y_test.shape[0]*100
+    scores[1,i] = accuracy_knn
+    print("accuracy knn = {}".format(accuracy_knn))
+    i = i+1
 
-# Print classification errors
-pred_errors = np.where( (knn_prediction == y_test) == False)[0]
-print("Errors in knn = {}".format(y_test[pred_errors]))
+np.save("../data/plots/knn_1", scores)
+
+   # # Print classification errors
+   # pred_errors = np.where( (knn_prediction == y_test) == False)[0]
+   # print("Errors in knn = {}".format(y_test[pred_errors]))
+    
