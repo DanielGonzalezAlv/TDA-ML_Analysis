@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Created on Fr July 19 12:43:08 2018
+@author: TDA-Team:  Sebastian Dobrzynski, Daniel Gonzalez, Andre Schulze
+
+This script ist intended for the TDA_ML_analysis project.  
+It is based on a sample solution of an excerse sheet of the course
+Fundamentals of Machine Learning hold in WS 2018 in Heidelberg
+"""
+
 #%%
 import matplotlib.pyplot as plt
 plt.style.use('seaborn-whitegrid')
