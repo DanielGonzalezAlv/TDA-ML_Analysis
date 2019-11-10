@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Created on Fr July 12 18:03:28 2018
+
+@author: TDA-Team:  Sebastian Dobrzynski, Daniel Gonzalez, Andre Schulze
+
+"""
+
 #%% Change working directory from the workspace root to the ipynb file location. Turn this addition off with the DataScience.changeDirOnImportExport setting
 # ms-python.python added
 import os

@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Created on Fr July 12 18:03:28 2018
+
+@author: TDA-Team:  Sebastian Dobrzynski, Daniel Gonzalez, Andre Schulze
+"""
+
 from __future__ import print_function
 
 import os

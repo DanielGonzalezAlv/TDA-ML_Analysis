@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Created on Fr July 12 18:03:28 2018
+
+@author: TDA-Team:  Sebastian Dobrzynski, Daniel Gonzalez, Andre Schulze
+"""
+
 import numpy as np
 
 def k_sigma(F, G, sigma):

@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Created on Fr July 19 12:43:08 2018
+@author: TDA-Team:  Sebastian Dobrzynski, Daniel Gonzalez, Andre Schulze
+"""
 
 #%% Load external dependencies
 import numpy as np
