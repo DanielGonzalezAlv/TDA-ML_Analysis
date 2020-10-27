@@ -1,6 +1,6 @@
 # TDA-ML_Analysis
 
-Analyze and solve a classification problem using Toplogical Data Analysis as a Machine Learning apprach.
+Analyze and solve a classification problem using Toplogical Data Analysis as a Machine Learning approach.
 
 ## Main Objectives
 
